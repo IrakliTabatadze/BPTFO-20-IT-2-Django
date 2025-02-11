@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %} Add New Event {% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <button type="submit" class="btn btn-success">Add</button>
+        <a href="{% url 'event_list' %}" class="btn btn-danger">Cancel</a>
+    </form>
+
+{% endblock %}

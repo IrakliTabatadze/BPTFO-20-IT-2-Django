@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} Events {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <a class="btn btn-primary" href="{% url 'add_event' %}"> Add New Event </a>
+    <div class="row">
+        {% for event in events %}
+
+            <div class="card" style="width: 18rem;">
+                <img src="https://logos-world.net/wp-content/uploads/2020/04/Guns-N-Roses-Logo-1987-Present.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"> {{event.title}} </h5>
+                    <p class="card-text"> {{event.description}} </p>
+                    <p class="card-text"> {{event.start_date}} </p>
+                    <p class="card-text"> {{event.max_attendees}} </p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
