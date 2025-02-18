@@ -34,6 +34,8 @@ def login_user(request):
                 login(request, user)
 
                 return redirect('event_list')
+            else:
+                return redirect('login')
 
     else:
         form = AuthenticationForm()

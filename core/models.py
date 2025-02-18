@@ -28,5 +28,8 @@ class Event(models.Model):
     max_attendees = models.PositiveIntegerField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         db_table = 'event'
