@@ -1,0 +1,13 @@
+[INFO  2025-02-21 22:01:55,153]  autoreload: Watching for file changes with StatReloader
+[INFO  2025-02-21 22:01:56,191]  basehttp: "GET / HTTP/1.1" 200 14958
+[INFO  2025-02-21 22:02:28,759]  autoreload: /Users/macintoshi/PycharmProjects/BPTFO-20-IT-2-Django/EventManager/settings.py changed, reloading.
+[INFO  2025-02-21 22:02:29,061]  autoreload: Watching for file changes with StatReloader
+[INFO  2025-02-21 22:02:30,323]  views: Event Filters: None, None
+[INFO  2025-02-21 22:02:30,324]  views: (AND: )
+[INFO  2025-02-21 22:02:30,396]  basehttp: "GET / HTTP/1.1" 200 14958
+[INFO  2025-02-21 22:03:11,686]  autoreload: /Users/macintoshi/PycharmProjects/BPTFO-20-IT-2-Django/EventManager/settings.py changed, reloading.
+[INFO  2025-02-21 22:03:44,363]  views: Event Filters: None, None
+[INFO  2025-02-21 22:03:44,363]  views: (AND: )
+[ERROR  2025-02-21 22:06:49,593]  views: Login failed: Wrong username or password.
+[WARNING  2025-02-21 22:07:41,487]  views: Login failed: Wrong username or password.
+[WARNING  2025-02-21 22:24:49,588]  views: Login failed: Wrong username or password.

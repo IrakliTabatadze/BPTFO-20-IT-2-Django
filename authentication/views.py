@@ -3,6 +3,10 @@ from .forms import RegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 def register_user(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -36,6 +40,10 @@ def login_user(request):
                 return redirect('event_list')
             else:
                 return redirect('login')
+        else:
+            # logger.error('Login failed: Wrong username or password.')
+            logger.warning('Login failed: Wrong username or password.')
+            return redirect('login')
 
     else:
         form = AuthenticationForm()

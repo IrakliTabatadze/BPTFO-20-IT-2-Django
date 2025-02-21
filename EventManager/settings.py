@@ -29,6 +29,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+BLOCK_IPS = [] # [127.0.0.1]
+
 
 # Application definition
 
@@ -53,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'middleware.simple_middleware.SimpleMiddleware',
+    'middleware.block_ip_middleware.BlockIPMiddleware',
 ]
 
 ROOT_URLCONF = 'EventManager.urls'
@@ -115,11 +119,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tbilisi'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -131,3 +135,44 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        'simple': {
+            'format': '{levelname} : {message}',
+            'style': '{'
+        },
+        'verbose': {
+            'format': '[{levelname}  {asctime}]  {module}: {message}',
+            'style': '{'
+        }
+    },
+
+    'handlers': {
+        'console': {
+            'formatter': 'simple',
+            'class': 'logging.StreamHandler'
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename': BASE_DIR / 'django.log'
+        }
+    },
+
+    'loggers': {
+        # 'django': {
+        #     'handlers': ['console', 'file'],
+        # },
+        'core': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+        },
+        'authentication': {
+            'handlers': ['file']
+        }
+    }
+}
