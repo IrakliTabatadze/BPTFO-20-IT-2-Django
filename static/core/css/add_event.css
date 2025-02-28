@@ -1,0 +1,10 @@
+.add-event-form-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-event-form{
+    width: 60%;
+    margin-top: 20px;
+}

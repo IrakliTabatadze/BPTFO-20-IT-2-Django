@@ -10,21 +10,11 @@
         <a class="btn btn-primary" href="{% url 'add_event' %}"> Add New Event </a>
     {% endif %}
     <div class="row">
-        {% for event in events %}
+        {% include 'events/paginator.html' %}
 
-            <div class="card" style="width: 18rem;">
-                <img src="https://logos-world.net/wp-content/uploads/2020/04/Guns-N-Roses-Logo-1987-Present.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title"><b>Title: </b> {{event.title}} </h5>
-                    <p class="card-text"><b>Description:</b> {{event.description|slice:":200"}} </p>
-                    <p class="card-text"><b>Start Date:</b> {{event.start_date}} </p>
-                    <p class="card-text"><b>Max Attendees:</b> {{event.max_attendees}} </p>
-                    <p class="card-text"><b>Location:</b> {{event.location}} </p>
-                    <a href="{% url 'detail_event' event.pk %}" class="btn btn-primary">See Details</a>
-                </div>
-            </div>
+        {% include 'events/events.html' %}
 
-        {% endfor %}
+        {% include 'events/paginator.html' %}
     </div>
 
 </div>

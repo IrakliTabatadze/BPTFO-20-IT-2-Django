@@ -27,9 +27,14 @@ class Event(models.Model):
     update_date = models.DateTimeField(auto_now=True)
     max_attendees = models.PositiveIntegerField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    # image = models.ImageField(upload_to='event-images', null=True, blank=True)
 
     def __str__(self):
         return self.title
 
     class Meta:
         db_table = 'event'
+
+class EventImage(models.Model):
+    image = models.ImageField(upload_to='event-images', null=True, blank=True)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='images')

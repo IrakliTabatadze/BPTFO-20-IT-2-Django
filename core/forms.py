@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event
+from .models import Event, EventImage
 
 class EventForm(forms.ModelForm):
     class Meta:
@@ -10,3 +10,10 @@ class EventForm(forms.ModelForm):
         # widgets = {
         #     'title': forms.TextInput(attrs={'class': 'form-control'}),
         # }
+
+class EventImageForm(forms.ModelForm):
+    class Meta:
+        model = EventImage
+        fields = ('image',)
+
+EventImageFormSet = forms.modelformset_factory(EventImage, form=EventImageForm, extra=3)
