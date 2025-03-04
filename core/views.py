@@ -1,17 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
-from .models import Event
+from .models import Event, EventTicket
 from .forms import EventForm, EventImageFormSet
 from django.contrib.auth.decorators import login_required
 from .permissions import event_administrator, delete_event_permission, change_event_permission
 from django.db.models import Q
 import logging
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.mail import send_mail
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
+
 # @login_required(login_url='login')
 def event_list(request):
-
     title = request.GET.get('title')
     location = request.GET.get('location')
 
@@ -34,7 +36,6 @@ def event_list(request):
         events = Event.objects.filter(filters)
     else:
         events = Event.objects.all()
-
 
     paginator = Paginator(events, 8)
 
@@ -86,9 +87,7 @@ def add_event(request):
         return render(request, 'events/add_event.html', {'event_form': event_form, 'image_formset': image_formset})
 
 
-
 def detail_event(request, pk):
-
     event = get_object_or_404(Event, pk=pk)
 
     return render(request, 'events/event_detail.html', {'event': event})
@@ -107,7 +106,6 @@ def delete_event(request, pk):
 @login_required(login_url='login')
 @change_event_permission
 def change_event(request, pk):
-
     event = get_object_or_404(Event, pk=pk)
 
     if request.method == 'POST':
@@ -122,3 +120,32 @@ def change_event(request, pk):
         form = EventForm(instance=event)
 
         return render(request, 'events/change_event.html', {'form': form})
+
+
+@login_required(login_url='login')
+def buy_ticket(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+
+    if event.sold_out():
+        return HttpResponse('All Tickets are sold out')
+
+    event_ticket, created = EventTicket.objects.get_or_create(event=event, owner=request.user)
+
+    # number_of_tickets = request.POST.get('number_of_tickets')
+
+    if created:
+        event_ticket.ticket_count = 1
+    else:
+        event_ticket.ticket_count += 1
+
+    event_ticket.save()
+
+    event.ticket_count -= 1
+    event.save()
+
+    send_mail('Buy Ticket', f'{request.user.username} has successfully bought ticket on: {event.title}',
+              settings.DEFAULT_FROM_EMAIL, [request.user.email], fail_silently=False)
+
+    return redirect('event_list')
+
+# SMTP Server - Simple Mail Transfer Protocol

@@ -1,0 +1,11 @@
+.main-container{
+    display: flex;
+    margin-top: 50px;
+    justify-content: space-evenly;
+}
+
+img{
+    margin: 10px ;
+    width: 30%;
+    height: 400px;
+}

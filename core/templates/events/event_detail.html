@@ -4,29 +4,32 @@
 
 {% load crispy_forms_tags %}
 
+{% load static %}
+
 {% block content %}
 
-   <div class="card text-center mt-4">
-  <div class="card-header">
-    Featured
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">{{event.title}}</h5>
-    <p class="card-text">{{ event.description }}</p>
-    <a href="{% url 'event_list' %}" class="btn btn-primary">Go Back</a>
+<link rel="stylesheet" href="{% static 'core/css/event_detail.css' %}">
 
-    {% if perms.core.delete_event %}
-      <a href="{% url 'delete_event' event.id %}" class="btn btn-danger">Delete</a>
+<div class="main-container">
+
+    {% if event.images.first %}
+      <img src="{{ event.images.first.image.url }}">
+    {% else %}
+      <img src="https://logos-world.net/wp-content/uploads/2020/04/Guns-N-Roses-Logo-1987-Present.jpg"
+         class="card-img-top" alt="...">
     {% endif %}
 
-    {% if perms.core.change_event %}
-      <a href="{% url 'change_event' event.id %}" class="btn btn-warning">Edit</a>
-    {% endif %}
 
-  </div>
-  <div class="card-footer text-body-secondary">
-    {{ event.start_date }}
-  </div>
+    <div class="card-body">
+        <h2 class="card-title">{{event.title}} </h2>
+        <p class="card-text"><b>Description:</b> {{event.description}} </p>
+        <p class="card-text"><b>Start Date:</b> {{event.start_date}} </p>
+        <p class="card-text"><b>Max Attendees:</b> {{event.max_attendees}} </p>
+        <p class="card-text"><b>Location:</b> {{event.location}} </p>
+        <a href="{% url 'buy_ticket' event.pk %}" class="btn btn-primary">Buy Ticket</a>
+
+    </div>
+
 </div>
 
 {% endblock %}
