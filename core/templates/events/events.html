@@ -15,7 +15,8 @@
         <p class="card-text"><b>Start Date:</b> {{event.start_date}} </p>
         <p class="card-text"><b>Max Attendees:</b> {{event.max_attendees}} </p>
         <p class="card-text"><b>Location:</b> {{event.location}} </p>
-        <a href="{% url 'detail_event' event.pk %}" class="btn btn-primary">See Details</a>
+        <a href="{% url 'core:detail_event' event.pk %}" class="btn btn-primary">See Details</a>
+        <a href="{% url 'core:delete_event' event.pk %}" class="btn btn-danger">Delete</a>
     </div>
 </div>
 

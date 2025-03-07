@@ -2,64 +2,82 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .forms import RegistrationForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
 
 import logging
 
 logger = logging.getLogger(__name__)
 
-def register_user(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-
-        if form.is_valid():
-            form.save()
-
-            return redirect('login')
-
-        else:
-            return render(request, 'registration/registration.html', {'form': form})
-    else:
-        form = RegistrationForm()
-
-        return render(request, 'registration/registration.html', {'form': form})
-
-
-def login_user(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-
-            user = authenticate(request, username=username, password=password)
-
-            if user is not None:
-                login(request, user)
-
-                return redirect('event_list')
-            else:
-                return redirect('login')
-        else:
-            # logger.error('Login failed: Wrong username or password.')
-            logger.warning('Login failed: Wrong username or password.')
-            return redirect('login')
-
-    else:
-        form = AuthenticationForm()
-        return render(request, 'registration/login.html', {'form': form})
+# def register_user(request):
+#     if request.method == 'POST':
+#         form = RegistrationForm(request.POST)
+#
+#         if form.is_valid():
+#             form.save()
+#
+#             return redirect('login')
+#
+#         else:
+#             return render(request, 'registration/registration.html', {'form': form})
+#     else:
+#         form = RegistrationForm()
+#
+#         return render(request, 'registration/registration.html', {'form': form})
 
 
-def logout_user(request):
-    logout(request)
+class UserRegistrationView(CreateView):
+    model = User
+    form_class = RegistrationForm
+    template_name = 'registration/registration.html'
+    success_url = reverse_lazy('authentication:login')
 
-    return redirect('login')
 
+# def login_user(request):
+#     if request.method == 'POST':
+#         form = AuthenticationForm(request, data=request.POST)
+#
+#         if form.is_valid():
+#             username = form.cleaned_data.get('username')
+#             password = form.cleaned_data.get('password')
+#
+#             user = authenticate(request, username=username, password=password)
+#
+#             if user is not None:
+#                 login(request, user)
+#
+#                 return redirect('event_list')
+#             else:
+#                 return redirect('login')
+#         else:
+#             # logger.error('Login failed: Wrong username or password.')
+#             logger.warning('Login failed: Wrong username or password.')
+#             return redirect('login')
+#
+#     else:
+#         form = AuthenticationForm()
+#         return render(request, 'registration/login.html', {'form': form})
+
+class UserLoginView(LoginView):
+    template_name = 'registration/login.html'
+    success_url = reverse_lazy('core:event_list')
+
+
+
+# def logout_user(request):
+#     logout(request)
+#
+#     return redirect('login')
+
+
+class UserLogoutView(LogoutView):
+    next_page = reverse_lazy('authentication:login')
 
 @login_required(login_url='login')
 def change_password(request):
