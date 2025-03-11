@@ -10,6 +10,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.views.generic import View, ListView, CreateView, DetailView, DeleteView, UpdateView
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from .mixins import CreateEventMixin
 
 logger = logging.getLogger(__name__)
 
@@ -97,11 +99,12 @@ logger = logging.getLogger(__name__)
 
 
 
-class EventListView(ListView):
+class EventListView(LoginRequiredMixin, ListView):
     model = Event
     template_name = 'events/event_list.html'
     context_object_name = 'events'
     paginate_by = 8
+    login_url = reverse_lazy('authentication:login')
 
     def get_queryset(self):
         title = self.request.GET.get('title')
@@ -167,11 +170,12 @@ class EventListView(ListView):
 #
 #         return render(request, 'events/add_event.html', {'event_form': event_form, 'image_formset': image_formset})
 
-class CreateEventView(CreateView):
+class CreateEventView(CreateEventMixin, CreateView):
     model = Event
     form_class = EventForm
     template_name = 'events/add_event.html'
     success_url = reverse_lazy('core:event_list')
+    # permission_required = 'core.add_event'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -281,3 +285,15 @@ def buy_ticket(request, pk):
     return redirect('event_list')
 
 # SMTP Server - Simple Mail Transfer Protocol
+
+
+# HTML -> NET
+# DJANGO REST FRAMEWORK
+# RestFul API - Representatinal State Transfer API
+# API - Application Programming Interface
+
+
+# GET
+# POST
+# PUT/PATCH
+# DELETE
