@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'authentication',
     'rest_framework',
     'drf_yasg',
-    'django_filters'
+    'django_filters',
+    'rest_framework_simplejwt'
 ]
 
 MIDDLEWARE = [
@@ -201,7 +202,10 @@ LOGIN_REDIRECT_URL = '/'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
 
 
