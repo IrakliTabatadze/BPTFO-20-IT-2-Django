@@ -12,6 +12,8 @@ from rest_framework.pagination import PageNumberPagination
 from django.core.cache import cache
 import hashlib
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+from .permissions import HasEventViewPermission
+from rest_framework.permissions import AllowAny
 
 
 class CustomPagination(PageNumberPagination):
@@ -158,6 +160,8 @@ class EventListAPIView(ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     pagination_class = CustomPagination
+    # permission_classes = (HasEventViewPermission,)
+    permission_classes = (AllowAny,)
 
     def get_queryset(self):
         events = super().get_queryset()
